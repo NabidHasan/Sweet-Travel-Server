@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
+
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config()
 const app = express();
 const port = 5000;
@@ -51,12 +53,23 @@ async function run() {
             res.json(result)
         })
 
-
+        //single item identify for my order
         app.get('/myOrder/:email', async (req, res) => {
             console.log(req.params.email);
 
             const result = await servicesOrders.find({ email: req.params.email }).toArray();
             res.json(result);
+        })
+
+        //delete 
+
+        app.delete('/myOrder/:id', async (req, res) => {
+            console.log(req.params.id)
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await servicesOrders.deleteOne(query);
+            res.json(result);
+
         })
 
 
