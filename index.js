@@ -38,11 +38,25 @@ async function run() {
 
         //myOrder items
 
+        app.get('/myOrder', async (req, res) => {
+            const cursor = servicesOrders.find({});
+            const services = await cursor.toArray();
+            res.send(services);
+        })
+
         app.post('/myOrder', async (req, res) => {
             console.log(req.body);
             const service = req.body;
             const result = await servicesOrders.insertOne(service);
             res.json(result)
+        })
+
+
+        app.get('/myOrder/:email', async (req, res) => {
+            console.log(req.params.email);
+
+            const result = await servicesOrders.find({ email: req.params.email }).toArray();
+            res.json(result);
         })
 
 
